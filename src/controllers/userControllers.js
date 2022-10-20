@@ -6,17 +6,13 @@ const jwt = require("jsonwebtoken");
 
 let {isEmpty, isValidName, isValidPhone, isValidpincode, isValidObjectId, isValidStreet} = validation;
 
-
-
-
 // ==========================================> CREATE USER <=================================//
-
-
 
 const createUser = async function (req, res) {
   try {
     let data = req.body;
     let files = req.files;
+    //console.log(files)
 
     if (Object.keys(data).length == 0) {
       return res.status(400).send({ status: "false", message: "All fields are mandatory" });
@@ -53,7 +49,6 @@ const createUser = async function (req, res) {
     if (!isValidName(fname)) {
       return res.status(400).send({status: "false",message: "first name must be in alphabetical order"});
     }
-  
 
     // ------- Address Validation  --------
     if (address) {
@@ -100,6 +95,7 @@ const createUser = async function (req, res) {
       }
     }
     const saltRounds = await bcrypt.genSalt(10);
+    console.log(saltRounds)
     const hash = await bcrypt.hash(password, saltRounds);
     data.password = hash;
 
@@ -112,12 +108,15 @@ const createUser = async function (req, res) {
       return res.status(400).send({status: "false", message: "Phone number is already in use"});
     }
 
-    if(!profileImage){
+    if(files.length===0){
       return res.status(400).send({ status : false, message : "Profile Image is mandatory"})
     }
+    if(files.fieldname=='profileImage'){
+      return res.status(400).send({ status : false, message : "file name should be profile image"})
+    }
 
-     
-    let profileImgUrl = await uploadFile(files[0]);
+    // console.log(files)
+    let profileImgUrl = await uploadFile(files[0])
         data.profileImage = profileImgUrl
 
     let savedUser = await userModel.create(data);
@@ -128,11 +127,7 @@ const createUser = async function (req, res) {
   }
 };
 
-
-
 // ==================================> USER LOGIN <====================================//
-
-
 
 const userLogin = async function (req, res) {
   try {
@@ -173,11 +168,7 @@ const userLogin = async function (req, res) {
   }
 };
 
-
-
 // =====================================> GET USER <===========================================
-
-
 
 const getUser = async function (req, res) {
   try {
@@ -204,11 +195,7 @@ const getUser = async function (req, res) {
   }
 };
 
-
-
 // ===================================> Update Users Data <=====================================
-
-
 
 const updateUsersProfile = async function (req, res) {
   try {

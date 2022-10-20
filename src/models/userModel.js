@@ -21,12 +21,13 @@ const userSchema = new mongoose.Schema(
       lowercase: true,
       unique: true,
       trim: true,
+      lowercase: true,
     },
 
     profileImage: {
       // s3 link
       type: String,
-     // required: true,
+      required: true,
       trim: true,
     },
 

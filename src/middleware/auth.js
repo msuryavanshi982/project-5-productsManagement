@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const UserModel = require("../models/userModel");
 const { isValidObjectId } = require("../validator/validation");
 
+//===========================Authorization=============================//
 const authentication = async function (req, res, next) {
   try {
     let bearerHeader = req.headers["authorization"];
@@ -30,7 +31,7 @@ const authentication = async function (req, res, next) {
   }
 };
 
-//==============================================Authorization=============================//
+//===========================Authorization=============================//
 
 const authorization = async function (req, res, next) {
   try {

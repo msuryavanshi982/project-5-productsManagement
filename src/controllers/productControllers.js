@@ -2,13 +2,9 @@ const productModel = require('../models/productModel')
 const aws = require('../aws/awsUpload')
 const validation = require('../validator/validation')
 
-let { isValid, isEmpty,validSize, isValidPrice, isValidStyle, isValidObjectId, isValidInputBody, validPrice } = validation;
-
-
+let { isEmpty,validSize, isValidPrice, isValidStyle, isValidObjectId, validPrice } = validation;
 
 //======================================> CREATE PRODUCT <=====================================//
-
-
 
 const createProduct = async (req, res) => {
     try {
@@ -23,10 +19,6 @@ const createProduct = async (req, res) => {
 
         if (!isEmpty(title)) {
             return res.status(400).send({ status: false, message: "Title is mandatory" })
-        }
-
-        if (!isValid(title)) {
-            return res.status(400).send({ status: false, message: "Title is not valid" })
         }
 
         if (!isEmpty(description)) {
@@ -53,10 +45,6 @@ const createProduct = async (req, res) => {
             return res.status(400).send({ status: false, message: "CurrencyFormat is mandatory" })
         }
 
-        if(!isValid(currencyFormat)){
-            return res.status(400).send({status:false,message:"CurrencyFormat is not valid"})
-        }
-
         if(currencyFormat!='₹'){
             return res.status(400).send({status:false,message:"Please enter a valid currencyFormat"})
         }
@@ -74,7 +62,7 @@ const createProduct = async (req, res) => {
         data.productImage = productImg;
 
         if(isFreeShipping){
-        if (!isValid(isFreeShipping)) {
+        if (!isEmpty(isFreeShipping)) {
             return res.status(400).send({ status: false, message: "isFreeShipping is not valid" })
         }
 
@@ -82,7 +70,7 @@ const createProduct = async (req, res) => {
             return res.status(400).send({ status: false, message: "Please enter a boolean value for isFreeShipping" })
         }
        }
-        if (!isValid(style)) {
+        if (!isEmpty(style)) {
             return res.status(400).send({ status: false, message: "Style is not valid" })
         }
 
@@ -118,14 +106,7 @@ const createProduct = async (req, res) => {
 
     }
 }
-
-
-
-
 //======================================> GET BY FILTER <==================================//
-
-
-
 
 const getProductsByFilter = async function (req, res){
     try{
@@ -170,24 +151,17 @@ const getProductsByFilter = async function (req, res){
         }
     }
 }
-
     let productDetails = await productModel.find(filter).sort({ price: priceSort })
     if(productDetails.length === 0){
         return res.status(404).send({ status : false, message : "no data found"})
     }
     return res.status(200).send({ status: true, message: 'Success', data: productDetails })
 
-
     }catch(error){
         return res.status(500).send({ error : error.message })
     }
 }
-
-
-
 //=====================================> GET API <==========================================//
-
-
 
 const productsById = async function (req, res) {
     try {
@@ -215,13 +189,7 @@ const productsById = async function (req, res) {
         res.status(500).send({ status: "false", message: error.message })
     }
 }
-
-
-
 //======================================> UPDATE <=====================================//
-
-
-
 
 const updateProducts = async function (req, res) {
     try {
@@ -248,7 +216,7 @@ const updateProducts = async function (req, res) {
         }
 
         if (data.title) {
-            if (!isValid(data.title)) {
+            if (!isEmpty(data.title)) {
                 return res.status(400).send({ status: false, message: "Title is not valid" })
             }
         }
@@ -278,7 +246,7 @@ const updateProducts = async function (req, res) {
         }
 
         if (data.style) {
-            if (!isValid(data.style)) {
+            if (!isEmpty(data.style)) {
                 return res.status(400).send({ status: false, message: "Style is not valid" })
             }
 
@@ -308,13 +276,7 @@ const updateProducts = async function (req, res) {
 
     }
 }
-
-
-
 //=====================================> DELETE PRODUCT <==================================//
-
-
-
 const deleteProduct = async function(req, res) {
     try {
         const productId = req.params.productId;
@@ -347,7 +309,6 @@ const deleteProduct = async function(req, res) {
         res.status(500).send({ error: error.message });
     }
 };
-
 
 module.exports = { createProduct, productsById, updateProducts,deleteProduct , getProductsByFilter}
 

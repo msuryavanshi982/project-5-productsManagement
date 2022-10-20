@@ -1,16 +1,18 @@
 const mongoose = require("mongoose");
 
-//validation 
-const isValid=function(value){
-  if (typeof value == "undefined" || value == null || value == " ")return false;
-  if (typeof value === "string" && value.trim().length > 0)return true;
-  return false
+//validations---------------------->>>
+
+//Value Validation
+const isEmpty = function (value) {
+  if (typeof value === "undefined" || value === null) return false;
+  if (typeof value === "string" && value.trim().length === 0) return false;
+  return true;
 };
 
-//Valid Sizes
-const validSize = function(size){
-  return ['S', 'XS', 'M', 'X', 'L', 'XXL', 'XL'].includes(size);
-}
+// Vlidation for objectId
+const isValidObjectId = (objectId) => {
+  return mongoose.Types.ObjectId.isValid(objectId);
+};
 
 //Name Validation
 const isValidName = function (name) {
@@ -18,13 +20,12 @@ const isValidName = function (name) {
   return nameRegex.test(name);
 };
 
-//Email Validation
-// const isValidEmail = function (email) {
-//   const emailRegex =
-//     /^[a-z0-9][a-z0-9-_\.]+@([a-z]|[a-z0-9]?[a-z0-9-]+[a-z0-9])\.[a-z0-9]{2,10}(?:\.[a-z]{2,10})?$/;
-//   return emailRegex.test(email);
-// };
-
+// Email Validation
+const isValidEmail = function (email) {
+  const emailRegex =
+    /^[a-z0-9][a-z0-9-_\.]+@([a-z]|[a-z0-9]?[a-z0-9-]+[a-z0-9])\.[a-z0-9]{2,10}(?:\.[a-z]{2,10})?$/;
+  return emailRegex.test(email);
+};
 
 //Phone Validation
 const isValidPhone = function (phone) {
@@ -38,29 +39,15 @@ const isValidpincode = function (pincode) {
   return pincodeRegex.test(pincode);
 };
 
-//Value Validation
-const isEmpty = function (value) {
-  if (typeof value === "undefined" || value === null) return false;
-  if (typeof value === "string" && value.trim().length === 0) return false;
-  return true;
-};
-
 //validation for Input Body
-const isValidInputBody = function(object) {
-  return Object.keys(object).length > 0
-}
-
-
-// Vlidation for objectId
-const isValidObjectId = (objectId) => {
-  return mongoose.Types.ObjectId.isValid(objectId);
+const isValidInputBody = function (object) {
+  return Object.keys(object).length > 0;
 };
 
-const isValidImage = function (profileImage) {
-  let imageRegex = /^\\s]+(\\.(?i)(jpe?g|png|gif|bmp))$/;
-  return imageRegex.test(profileImage);
-};
-
+// const isValidImage = function (profileImage) {
+//   let imageRegex = /^\\s]+(\\.(?i)(jpe?g|png|gif|bmp))$/;
+//   return imageRegex.test(profileImage);
+// };
 
 const isValidStreet = function (street) {
   let streets = /^[#.0-9a-zA-Z\s,-]+$/;
@@ -68,31 +55,34 @@ const isValidStreet = function (street) {
 };
 
 //Price Validation
-const isValidPrice = function(price){
+const isValidPrice = function (price) {
   return /^[1-9]\d{0,7}(?:\.\d{1,2})?$/.test(price);
-}
+};
+//Valid Sizes
+const validSize = function (size) {
+  return ["S", "XS", "M", "X", "L", "XXL", "XL"].includes(size);
+};
 
-//Style Validation 
+//Style Validation
 const isValidStyle = function (value) {
-  return (/^[a-zA-Z _.-]+$/).test(value)        
-}
+  return /^[a-zA-Z _.-]+$/.test(value);
+};
 
-//Price validation 
-const validPrice = function (price){
-  return(/^\d{0,8}(\.\d{1,4})?$/).test(price)
-}
+//Price validation
+const validPrice = function (price) {
+  return /^\d{0,8}(\.\d{1,4})?$/.test(price);
+};
 
 module.exports = {
-  isValid,
-  validSize,
   isEmpty,
+  validSize,
   isValidName,
-  // isValidEmail,
+  isValidEmail,
   isValidPhone,
   isValidInputBody,
   isValidpincode,
   isValidObjectId,
-  isValidImage,
+  //isValidImage,
   isValidStreet,
   isValidPrice,
   isValidStyle,
