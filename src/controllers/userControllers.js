@@ -317,3 +317,6 @@ const updateUsersProfile = async function (req, res) {
 };
 
 module.exports = {createUser, userLogin, getUser, updateUsersProfile};
+
+
+
